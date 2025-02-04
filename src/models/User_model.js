@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     password: {type: String, required: true}
 }, {timestamps: true});
 
-userSchema.pre('save', async (next) =>{
+userSchema.pre('save', async function(next){
     if(!this.isModified('password')) return next();
     try{
         const salt = await bcrypt.genSalt(10);
@@ -17,7 +17,6 @@ userSchema.pre('save', async (next) =>{
         next(error);
     }
 })
-
 
 
 userSchema.methods.comparePassword = async function(examplePassword){

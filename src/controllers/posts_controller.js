@@ -1,5 +1,5 @@
 const Post = require('../models/Post_model');
-
+const jwt = require('jsonwebtoken');
 const getPosts = async (req, res)=>{
     try{
         const userId = req.headers['authorization'];
@@ -14,10 +14,11 @@ const getPosts = async (req, res)=>{
 
 const createPost = async (req, res)=>{
     try{
-        const userId = req.headers['authorization'];
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = await jwt.decode(token, process.env.JWT_SECRET_KEY);
         const {title, description} = req.body;
-        const post = new Post({title, description, owner: userId })
-        await post.save(); // Save the new product
+        const post = new Post({title, description, owner: decoded.id})
+        await post.save();
         res.status(201).json({post, message: 'New post created successfully!'});
     } catch(error){
         console.error(`${error.message}`);
