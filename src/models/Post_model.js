@@ -4,7 +4,7 @@ const {Schema} = require("mongoose");
 const postSchema = new mongoose.Schema({
     title:{type: String, required: true},
     description: {type: String, required: true},
-    owner: {type: Schema.Types.ObjectId, ref: 'User', required: true}
+    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true}
 }, {timestamps: true});
 
 

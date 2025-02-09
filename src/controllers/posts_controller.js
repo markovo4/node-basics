@@ -17,7 +17,7 @@ const createPost = async (req, res)=>{
         const token = req.headers.authorization.split(' ')[1];
         const decoded = await jwt.decode(token, process.env.JWT_SECRET_KEY);
         const {title, description} = req.body;
-        const post = new Post({title, description, owner: decoded.id})
+        const post = new Post({title, description, userId: decoded.id})
         await post.save();
         res.status(201).json({post, message: 'New post created successfully!'});
     } catch(error){
