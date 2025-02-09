@@ -2,8 +2,7 @@ const Post = require('../models/Post_model');
 const jwt = require('jsonwebtoken');
 const getPosts = async (req, res)=>{
     try{
-        const userId = req.headers['authorization'];
-        const post = await Post.find({id: userId});
+        const post = await Post.find({userId: req.userId})
         res.status(200).json({post, message: 'Posts retrieved successfully!'})
     } catch(error){
         console.error(`${error.message}`);
