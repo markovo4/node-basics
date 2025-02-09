@@ -19,6 +19,14 @@ module.exports = (req, res, next)=>{
             return res.status(401).json({message: 'Invalid Token!'})
         }
         req.userId = decoded.id;
+
+        const remainingTime = decoded.exp - Math.floor(Date.now() / 1000);
+
+        if(remainingTime < 60){
+            const token = jwt.sign({id: decoded.id}, process.env.JWT_SECRET_KEY, {expiresIn: '1h'})
+            res.setHeader('Authorization', `Bearer ${token}`);
+        }
+
         next();
     })
 }
